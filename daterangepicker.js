@@ -655,6 +655,9 @@
             if (dayOfWeek == this.locale.firstDay)
                 startDay = daysInLastMonth - 6;
 
+            if (daysInLastMonth - startDay == 6)
+                startDay = 1;
+
             var curDate = moment([lastYear, lastMonth, startDay, 12, minute, second]);
 
             var col, row;
@@ -795,7 +798,7 @@
 
                     //grey out the dates in other months displayed at beginning and end of this calendar
                     if (calendar[row][col].month() != calendar[1][1].month())
-                        classes.push('off');
+                        classes.push('off', 'other-month');
 
                     //don't allow selection of dates before the minimum date
                     if (this.minDate && calendar[row][col].isBefore(this.minDate, 'day'))
@@ -830,16 +833,18 @@
                             Array.prototype.push.apply(classes, isCustom);
                     }
 
-                    var cname = '', disabled = false;
+                    var cname = '', disabled = false, hidden = false;
                     for (var i = 0; i < classes.length; i++) {
                         cname += classes[i] + ' ';
                         if (classes[i] == 'disabled')
                             disabled = true;
+                        if (classes[i] == 'other-month')
+                            hidden = true;
                     }
-                    if (!disabled)
+                    if (!disabled && !hidden)
                         cname += 'available';
 
-                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
+                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + (hidden ? "" : calendar[row][col].date()) + '</td>';
 
                 }
                 html += '</tr>';
