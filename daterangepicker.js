@@ -1306,7 +1306,7 @@
             // * if one of the inputs above the calendars was focused, cancel that manual input
             //
 
-            if (!this.startDate.isSame(this.endDate, 'day')) { //picking start
+            if (!this.startDate.isSame(this.endDate, 'day') || this.singleDatePicker) { //picking start
                 if (this.timePicker) {
                     var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
                     if (!this.timePicker24Hour) {
